@@ -1,7 +1,7 @@
 plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "1.9.25"
-    id("org.jetbrains.intellij") version "1.17.4"
+    id("org.jetbrains.intellij.platform") version "2.0.1"
 }
 
 group = "org.oleg.iem"
@@ -9,12 +9,18 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    intellijPlatform{
+        defaultRepositories()
+    }
 }
 
-intellij {
-    version.set("2024.2.1")
-    type.set("IC")
-    plugins.set(listOf("gherkin:242.20224.159"))  // Gherkin language plugin
+dependencies {
+    intellijPlatform {
+        intellijIdeaCommunity("2024.2.1")
+        bundledPlugin("com.intellij.java")
+        plugin("gherkin", "242.20224.159")
+        instrumentationTools()
+    }
 }
 
 tasks {
