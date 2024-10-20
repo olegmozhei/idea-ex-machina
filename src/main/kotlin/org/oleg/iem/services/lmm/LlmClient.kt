@@ -62,7 +62,7 @@ class LlmClient {
                 // Read the stream in chunks
                 while (br.readLine().also { chunk = it } != null) {
                     val result = JSONObject(chunk)
-                    val responseChunk = result.getString("response")
+                    val responseChunk = if (result.has("response")) result.getString("response") else result.toString()
                     responseBuilder.append(responseChunk)
                     if (printChunks) print(responseChunk)
                 }

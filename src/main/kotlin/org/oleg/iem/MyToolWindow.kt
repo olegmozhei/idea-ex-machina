@@ -138,10 +138,11 @@ object MyToolWindow : LlmResponseReadyListener, LlmRequestProcessedListener {
     }
 
     override fun responseReceived(response: AskLLMResponse) {
-        TODO("Not yet implemented")
+        println("Got message from messaging infrastructure")
+        addMessageToChat("LLM: ${response.llmResponse}")
     }
 
     override fun requestProcessed(request: AskLLMRequest) {
-        TODO("Not yet implemented")
+        addMessageToChat("You: ${request.prompt}")
     }
 }
