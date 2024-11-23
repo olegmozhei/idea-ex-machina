@@ -21,6 +21,9 @@ dependencies {
     implementation("dev.langchain4j:langchain4j:0.34.0")
     implementation("dev.langchain4j:langchain4j-embeddings-bge-small-en-v15-q:0.34.0")
 
+    // Vector database java SDK
+    implementation("io.qdrant:client:1.12.0")
+
     // Testing libraries:
     implementation("org.testng:testng:7.8.0")
     implementation("io.cucumber:cucumber-testng:7.15.0")

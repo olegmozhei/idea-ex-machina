@@ -37,7 +37,11 @@ class LlmClient {
         val payload = mapper.writeValueAsString(embeddingRequest)
         val response = getApiRequestFromLLM(OLLAMA_EMBEDDING_MODEL_API_URL, payload, false)
         val embeddingResponse = mapper.readValue(response, EmbeddingResponse::class.java)
-        return Embedding(embeddingResponse.embeddings)
+        val data = Embedding(embeddingResponse.embeddings)
+        if (data.vector().isEmpty()){
+            throw RuntimeException("Something is going wrong. No vector data. URL:$OLLAMA_EMBEDDING_MODEL_API_URL. Payload: $payload")
+        }
+        return data
     }
 
     private fun getApiRequestFromLLM(url: String, payload: String, printChunks: Boolean): String {
@@ -81,7 +85,7 @@ class LlmClient {
         return getApiRequestFromLLM(url, payloadString, printChunks)
     }
 
-    internal class EmbeddingRequest(var query: String, var model: String)
+    internal class EmbeddingRequest(var prompt: String, var model: String)
 
     internal class EmbeddingResponse {
         var embedding: List<Float>? = null

@@ -18,7 +18,7 @@ class LlmService (
     override fun requestReceived(request: AskLLMRequest) {
         cs.launch {
             println("Running coroutine to get LLM response")
-            LlmUtils().prepareRequest(request)
+            LlmUtils(project).prepareRequest(request)
 
             val requestPublisher: LlmRequestProcessedListener = project.messageBus
                 .syncPublisher(LlmRequestProcessedListener.LLM_REQUEST_PROCESSED_TOPIC)
