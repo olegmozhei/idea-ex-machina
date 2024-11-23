@@ -1,5 +1,7 @@
 package org.oleg.iem
 
+import com.intellij.openapi.components.service
+import com.intellij.openapi.components.services
 import javax.swing.event.DocumentListener
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.JBPopupMenu
@@ -12,7 +14,9 @@ import org.oleg.iem.listeners.LlmResponseReadyListener
 import org.oleg.iem.services.lmm.AskLLMRequest
 import org.oleg.iem.utils.AskLLMResponse
 import java.awt.BorderLayout
+import java.awt.FlowLayout
 import java.awt.Font
+import java.nio.file.Paths
 import javax.swing.*
 import javax.swing.event.DocumentEvent
 
@@ -242,5 +246,26 @@ object MyToolWindow : LlmResponseReadyListener, LlmRequestProcessedListener {
         dialog.layout = BorderLayout()
         dialog.setSize(400, 150)
         dialog.setLocationRelativeTo(null)
+
+        val inputPanel = JPanel(FlowLayout())
+        inputPanel.add(JLabel("Enter Context Path"))
+        val projectService = project!!.service<MySettings>()
+
+        val pathToShow = if (projectService.state.PATH_TO_PROJECT_CONTEXT == "") Paths.get("")
+            .toAbsolutePath()
+            .toString() else projectService.state.PATH_TO_PROJECT_CONTEXT
+        val pathField = JTextField(pathToShow, 20)
+        inputPanel.add(pathField)
+
+        // Error label
+        val errorLabel = JLabel("")
+        errorLabel.foreground = JBColor.RED
+
+        // Button panel
+        val buttonPanel = JPanel(FlowLayout())
+        val okButton = JButton("OK")
+        val cancelButton = JButton("Cancel")
+
+        dialog.isVisible = true
     }
 }
