@@ -16,6 +16,7 @@ import org.oleg.iem.utils.AskLLMResponse
 import java.awt.BorderLayout
 import java.awt.FlowLayout
 import java.awt.Font
+import java.nio.file.Files
 import java.nio.file.Paths
 import javax.swing.*
 import javax.swing.event.DocumentEvent
@@ -265,6 +266,31 @@ object MyToolWindow : LlmResponseReadyListener, LlmRequestProcessedListener {
         val buttonPanel = JPanel(FlowLayout())
         val okButton = JButton("OK")
         val cancelButton = JButton("Cancel")
+
+        okButton.addActionListener {
+            val input = pathField.text
+            val path = Paths.get(input)
+
+            if (input.isBlank()){
+                errorLabel.text = "Path cannot be empty."
+            } else if (!Files.exists(path) || !Files.isDirectory(path)){
+                errorLabel.text = "Path doesn't exist. Please enter a valid path"
+            } else {
+                projectService.state.PATH_TO_PROJECT_CONTEXT = input
+                println("Context path updated to: ${projectService.state.PATH_TO_PROJECT_CONTEXT}")
+                dialog.dispose()
+            }
+        }
+
+        cancelButton.addActionListener {
+            dialog.dispose()
+        }
+
+        dialog.add(inputPanel, BorderLayout.NORTH)
+        dialog.add(errorLabel, BorderLayout.CENTER)
+        buttonPanel.add(okButton)
+        buttonPanel.add(cancelButton)
+        dialog.add(buttonPanel, BorderLayout.SOUTH)
 
         dialog.isVisible = true
     }
