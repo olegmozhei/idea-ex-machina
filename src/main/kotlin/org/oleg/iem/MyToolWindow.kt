@@ -2,6 +2,7 @@ package org.oleg.iem
 
 import javax.swing.event.DocumentListener
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.ui.JBPopupMenu
 import com.intellij.ui.Gray
 import com.intellij.ui.JBColor
 import com.intellij.ui.components.JBScrollPane
@@ -24,8 +25,8 @@ object MyToolWindow : LlmResponseReadyListener, LlmRequestProcessedListener {
         // Custom dropdown menu simulation using a button and popup menu
         val settingsButton = JButton("Settings")
 
-        // popup menu with custom background items
-        val popupMenu = JPopupMenu()
+        // Popup menu with custom background items
+        val popupMenu = JBPopupMenu()
 
         println("Creating tool window content...")
         myPanel.layout = BoxLayout(myPanel, BoxLayout.Y_AXIS)
@@ -87,17 +88,18 @@ object MyToolWindow : LlmResponseReadyListener, LlmRequestProcessedListener {
             ) as String?
             if (!input.isNullOrBlank()){
                 API_ENDPOINT = input
+                println("API endpoint updated to: $API_ENDPOINT")
             }
         }
 
         // Add action for "Context path" item
         contextPathItem.addActionListener {
-            showPathCOnfigurationDialog()
+            showPathConfigurationDialog()
         }
 
         // Panel to hold menu bar and align it to the left
         val topPanel = JPanel(BorderLayout())
-        topPanel.add(settingsButton, BorderLayout.WEST)
+        topPanel.add(settingsButton, BorderLayout.WEST)  // Align menu to the left
         myPanel.add(topPanel, BorderLayout.NORTH)
 
         chatArea.isEditable = false  //users can only read from chat area
@@ -118,8 +120,18 @@ object MyToolWindow : LlmResponseReadyListener, LlmRequestProcessedListener {
 
         myPanel.add(scrollPane)
         myPanel.add(inputScrollPane)
-        myPanel.add(sendButton)
-        myPanel.add(sendWithoutContextButton)
+
+        // Panel to hold buttons and align them to the left
+        val buttonPanel = JPanel()
+        buttonPanel.layout = BoxLayout(buttonPanel, BoxLayout.X_AXIS)
+        buttonPanel.add(sendButton)
+        buttonPanel.add(sendWithoutContextButton)
+
+        // Align button panel to the left in the main panel
+        val bottomPanel = JPanel(BorderLayout())
+        bottomPanel.add(buttonPanel, BorderLayout.WEST)
+
+        myPanel.add(bottomPanel, BorderLayout.SOUTH)
 
         sendButton.addActionListener {
             val message = inputField.text
@@ -222,5 +234,13 @@ object MyToolWindow : LlmResponseReadyListener, LlmRequestProcessedListener {
 
     override fun requestProcessed(request: AskLLMRequest) {
         addMessageToChat("You: ${request.prompt}")
+    }
+
+    fun showPathConfigurationDialog(){
+        // Create dialog
+        val dialog = JDialog(null as JFrame?, "Context Path Configuration", true)
+        dialog.layout = BorderLayout()
+        dialog.setSize(400, 150)
+        dialog.setLocationRelativeTo(null)
     }
 }
