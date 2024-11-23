@@ -37,6 +37,12 @@
                 icon="/icons/tool_window.svg"
                 canCloseContents="false"
         />
+
+        <fileType name="MyPrompt File"
+                  implementationClass="org.oleg.iem.my_prompt_language.MyPromptFileType"
+                  fieldName="INSTANCE"
+                  language="MyPrompt"
+                  extensions="my_prompt"/>
     </extensions>
     <actions>
 
