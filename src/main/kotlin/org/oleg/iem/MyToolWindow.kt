@@ -10,18 +10,36 @@ import org.oleg.iem.listeners.LlmRequestReceivedListener
 import org.oleg.iem.listeners.LlmResponseReadyListener
 import org.oleg.iem.services.lmm.AskLLMRequest
 import org.oleg.iem.utils.AskLLMResponse
+import java.awt.BorderLayout
 import java.awt.Font
 import javax.swing.*
 import javax.swing.event.DocumentEvent
 
 object MyToolWindow : LlmResponseReadyListener, LlmRequestProcessedListener {
-    private val myPanel = JPanel()  // main container that can hold other UI components
+    private val myPanel = JPanel(BorderLayout())  // main container that can hold other UI components
     private val chatArea = JTextArea(20, 50)  // displays chat messages
     var project: Project? = null
 
     init {
+        // Custom dropdown menu simulation using a button and popup menu
+        val settingsButton = JButton("Settings")
+
+        // popup menu with custom background items
+        val popupMenu = JPopupMenu()
+
         println("Creating tool window content...")
         myPanel.layout = BoxLayout(myPanel, BoxLayout.Y_AXIS)
+
+        val apiEndpointItem = JMenuItem("API endpoint")
+        val contextPathItem = JMenuItem("Context path")
+        val minScoreItem = JMenuItem("Min Score")
+        val maxResults = JMenuItem("Max Results")
+
+        popupMenu.add(apiEndpointItem)
+        popupMenu.add(contextPathItem)
+        popupMenu.add(minScoreItem)
+        popupMenu.add(maxResults)
+
         chatArea.isEditable = false  //users can only read from chat area
         val scrollPane = JBScrollPane(chatArea)
 
