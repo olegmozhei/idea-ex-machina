@@ -40,6 +40,66 @@ object MyToolWindow : LlmResponseReadyListener, LlmRequestProcessedListener {
         popupMenu.add(minScoreItem)
         popupMenu.add(maxResults)
 
+        // Display popup when button is clicked
+        settingsButton.addActionListener {
+            popupMenu.show(settingsButton, 0, settingsButton.height)
+        }
+
+        minScoreItem.addActionListener {
+            val input = JOptionPane.showInputDialog(
+                myPanel,
+                "Enter Min Score for context",
+                "Min Score Configuration",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                null,
+                EMBEDDING_MIN_SCORE
+            ) as String?
+            if (!input.isNullOrBlank()){
+                EMBEDDING_MIN_SCORE = input
+            }
+        }
+
+        maxResults.addActionListener {
+            val input = JOptionPane.showInputDialog(
+                myPanel,
+                "Enter Max Context Results",
+                "Max Results Configuration",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                null,
+                EMBEDDING_MAX_RESULTS
+            ) as String?
+            if (!input.isNullOrBlank()){
+                EMBEDDING_MAX_RESULTS = input
+            }
+        }
+
+        apiEndpointItem.addActionListener {
+            val input = JOptionPane.showInputDialog(
+                myPanel,
+                "Enter API Endpoint",
+                "API Endpoint Configuration",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                null,
+                API_ENDPOINT
+            ) as String?
+            if (!input.isNullOrBlank()){
+                API_ENDPOINT = input
+            }
+        }
+
+        // Add action for "Context path" item
+        contextPathItem.addActionListener {
+            showPathCOnfigurationDialog()
+        }
+
+        // Panel to hold menu bar and align it to the left
+        val topPanel = JPanel(BorderLayout())
+        topPanel.add(settingsButton, BorderLayout.WEST)
+        myPanel.add(topPanel, BorderLayout.NORTH)
+
         chatArea.isEditable = false  //users can only read from chat area
         val scrollPane = JBScrollPane(chatArea)
 
