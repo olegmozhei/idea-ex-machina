@@ -10,7 +10,7 @@
 
   elementTypeHolderClass="org.oleg.iem.my_prompt_language.gen.psi.MyPromptTypes"
   elementTypeClass="org.oleg.iem.my_prompt_language.MyPromptElementType"
-  tokenTypeClass="org.oleg.iem.my_prompt_language.gen.psi.MyPromptTokenType"
+  tokenTypeClass="org.oleg.iem.my_prompt_language.MyPromptTokenType"
 }
 
 myPromptFile ::= comment* context_chunks comment* query comment* details comment* prompt comment* variables* comment* variables_table* comment*

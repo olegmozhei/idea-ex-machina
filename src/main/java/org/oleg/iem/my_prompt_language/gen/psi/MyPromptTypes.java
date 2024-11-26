@@ -5,6 +5,7 @@ import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.PsiElement;
 import com.intellij.lang.ASTNode;
 import org.oleg.iem.my_prompt_language.MyPromptElementType;
+import org.oleg.iem.my_prompt_language.MyPromptTokenType;
 import org.oleg.iem.my_prompt_language.gen.psi.impl.*;
 
 public interface MyPromptTypes {
