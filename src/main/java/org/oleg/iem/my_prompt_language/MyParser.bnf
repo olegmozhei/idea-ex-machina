@@ -1,5 +1,5 @@
 {
-  parserClass="org.oleg.iem.my_prompt_language.parser.myPromptParser"
+  parserClass="org.oleg.iem.my_prompt_language.gen.parser.myPromptParser"
 
   extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
 
@@ -8,7 +8,7 @@
   psiPackage="org.oleg.iem.my_prompt_language.psi"
   psiImplPackage="org.oleg.iem.my_prompt_language.psi.impl"
 
-  elementTypeHolderClass="org.oleg.iem.my_prompt_language.psi.MyPromptTypes"
+  elementTypeHolderClass="org.oleg.iem.my_prompt_language.gen.psi.MyPromptTypes"
   elementTypeClass="org.oleg.iem.my_prompt_language.psi.MyPromptElementType"
   tokenTypeClass="org.oleg.iem.my_prompt_language.psi.MyPromptTokenType"
 }

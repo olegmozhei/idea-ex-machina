@@ -1,9 +1,11 @@
 // This is a generated file. Not intended for manual editing.
-package org.oleg.iem.my_prompt_language.psi;
+package org.oleg.iem.my_prompt_language.gen.psi;
 
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.PsiElement;
 import com.intellij.lang.ASTNode;
+import org.oleg.iem.my_prompt_language.psi.MyPromptElementType;
+import org.oleg.iem.my_prompt_language.psi.MyPromptTokenType;
 import org.oleg.iem.my_prompt_language.psi.impl.*;
 
 public interface MyPromptTypes {

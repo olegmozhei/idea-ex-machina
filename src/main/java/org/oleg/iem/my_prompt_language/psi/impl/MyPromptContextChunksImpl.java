@@ -7,7 +7,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
-import static org.oleg.iem.my_prompt_language.psi.MyPromptTypes.*;
+import static org.oleg.iem.my_prompt_language.gen.psi.MyPromptTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import org.oleg.iem.my_prompt_language.psi.*;
 

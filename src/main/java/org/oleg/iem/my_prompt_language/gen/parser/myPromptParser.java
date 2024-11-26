@@ -1,9 +1,9 @@
 // This is a generated file. Not intended for manual editing.
-package org.oleg.iem.my_prompt_language.parser;
+package org.oleg.iem.my_prompt_language.gen.parser;
 
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiBuilder.Marker;
-import static org.oleg.iem.my_prompt_language.psi.MyPromptTypes.*;
+import static org.oleg.iem.my_prompt_language.gen.psi.MyPromptTypes.*;
 import static com.intellij.lang.parser.GeneratedParserUtilBase.*;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.lang.ASTNode;
