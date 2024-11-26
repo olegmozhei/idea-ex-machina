@@ -22,17 +22,17 @@ final class MyPromptParserDefinition implements ParserDefinition {
     }
 
     @Override
+    public @NotNull TokenSet getCommentTokens() {
+        return MyPromptTokenSets.COMMENTS;
+    }
+
+    @Override
     public @NotNull PsiParser createParser(Project project) {
         return null;
     }
 
     @Override
     public @NotNull IFileElementType getFileNodeType() {
-        return null;
-    }
-
-    @Override
-    public @NotNull TokenSet getCommentTokens() {
         return null;
     }
 
