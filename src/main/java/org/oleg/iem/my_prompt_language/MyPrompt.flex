@@ -37,4 +37,10 @@ PIPE=[]*\|[ ]*
 %state WAITING_VALUE WAITING_CELL WAITING_SEPARATOR WAITING_CONTEXT_VALUE WAITING_CONTEXT_SEPARATOR
 
 %%
-<YYINITIAL> {COMMENT}-{CRLF}+    { yybegin(YYINITIAL); return MyPromptTypes.COMMENT_VALUE; }
+// Rules (Token Matching Rules) part:
+// This rule applies only when the lexer is in the YYINITIAL state.
+<YYINITIAL> {COMMENT}-{CRLF}+                                          { yybegin(YYINITIAL); return MyPromptTypes.COMMENT_VALUE; }
+
+<YYINITIAL> {CONTEXT_CHUNKS_KEYWORD}+                                  { yybegin(WAITING_SEPARATOR); return MyPromptTypes.CONTEXT_CHUNKS_KEYWORD; }
+
+<WAITING_SEPARATOR> {SEPARATOR}                                        { yybegin(WAITING_VALUE); return MyPromptTypes.SEPARATOR; }
