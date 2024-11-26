@@ -1,0 +1,27 @@
+{
+  parserClass="org.oleg.iem.my_prompt_language.parser.myPromptParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="MyPrompt"
+  psiImplClassSuffix="Impl"
+  psiPackage="org.oleg.iem.my_prompt_language.psi"
+  psiImplPackage="org.oleg.iem.my_prompt_language.psi.impl"
+
+  elementTypeHolderClass="org.oleg.iem.my_prompt_language.psi.MyPromptTypes"
+  elementTypeClass="org.oleg.iem.my_prompt_language.psi.MyPromptElementType"
+  tokenTypeClass="org.oleg.iem.my_prompt_language.psi.MyPromptTokenType"
+}
+
+myPromptFile ::= comment* context_chunks comment* query comment* details comment* prompt comment* variables* comment* variables_table* comment*
+
+context_chunks ::= CONTEXT_CHUNKS_KEYWORD SEPARATOR VALUE_LINE
+query ::= QUERY_KEYWORD SEPARATOR (VALUE_LINE|VALUE_MULTILINE)
+details ::= DETAILS_KEYWORD SEPARATOR (VALUE_LINE|VALUE_MULTILINE)
+prompt ::= PROMPT_KEYWORD SEPARATOR (VALUE_LINE|VALUE_MULTILINE)
+variables ::= VARIABLES_KEYWORD SEPARATOR
+
+variables_table ::= table_header table_row*
+table_header ::= PIPE cell_value (PIPE cell_value)* PIPE
+table_row ::= PIPE cell_value (PIPE cell_value)* PIPE
+cell_value ::= VALUE
