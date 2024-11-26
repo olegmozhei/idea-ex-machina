@@ -3,6 +3,11 @@
 
 package org.oleg.iem.my_prompt_language;
 
+import com.intellij.lexer.FlexLexer;
+import com.intellij.psi.tree.IElementType;
+import org.oleg.iem.my_prompt_language.gen.psi.MyPromptTypes;
+import com.intellij.psi.TokenType;
+
 
 class GeneratedMyPromptLexer implements FlexLexer {
 

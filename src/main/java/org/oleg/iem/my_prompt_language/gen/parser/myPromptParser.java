@@ -48,6 +48,18 @@ public class myPromptParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // COMMENT_VALUE
+  public static boolean comment(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "comment")) return false;
+    if (!nextTokenIs(b, COMMENT_VALUE)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, COMMENT_VALUE);
+    exit_section_(b, m, COMMENT, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // CONTEXT_CHUNKS_KEYWORD SEPARATOR VALUE_LINE
   public static boolean context_chunks(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "context_chunks")) return false;
@@ -85,7 +97,7 @@ public class myPromptParser implements PsiParser, LightPsiParser {
   // comment* context_chunks comment* query comment* details comment* prompt comment* variables* comment* variables_table* comment*
   static boolean myPromptFile(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "myPromptFile")) return false;
-    if (!nextTokenIs(b, "", COMMENT, CONTEXT_CHUNKS_KEYWORD)) return false;
+    if (!nextTokenIs(b, "", COMMENT_VALUE, CONTEXT_CHUNKS_KEYWORD)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = myPromptFile_0(b, l + 1);
@@ -110,7 +122,7 @@ public class myPromptParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "myPromptFile_0")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!consumeToken(b, COMMENT)) break;
+      if (!comment(b, l + 1)) break;
       if (!empty_element_parsed_guard_(b, "myPromptFile_0", c)) break;
     }
     return true;
@@ -121,7 +133,7 @@ public class myPromptParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "myPromptFile_2")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!consumeToken(b, COMMENT)) break;
+      if (!comment(b, l + 1)) break;
       if (!empty_element_parsed_guard_(b, "myPromptFile_2", c)) break;
     }
     return true;
@@ -132,7 +144,7 @@ public class myPromptParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "myPromptFile_4")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!consumeToken(b, COMMENT)) break;
+      if (!comment(b, l + 1)) break;
       if (!empty_element_parsed_guard_(b, "myPromptFile_4", c)) break;
     }
     return true;
@@ -143,7 +155,7 @@ public class myPromptParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "myPromptFile_6")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!consumeToken(b, COMMENT)) break;
+      if (!comment(b, l + 1)) break;
       if (!empty_element_parsed_guard_(b, "myPromptFile_6", c)) break;
     }
     return true;
@@ -154,7 +166,7 @@ public class myPromptParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "myPromptFile_8")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!consumeToken(b, COMMENT)) break;
+      if (!comment(b, l + 1)) break;
       if (!empty_element_parsed_guard_(b, "myPromptFile_8", c)) break;
     }
     return true;
@@ -176,7 +188,7 @@ public class myPromptParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "myPromptFile_10")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!consumeToken(b, COMMENT)) break;
+      if (!comment(b, l + 1)) break;
       if (!empty_element_parsed_guard_(b, "myPromptFile_10", c)) break;
     }
     return true;
@@ -198,7 +210,7 @@ public class myPromptParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "myPromptFile_12")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!consumeToken(b, COMMENT)) break;
+      if (!comment(b, l + 1)) break;
       if (!empty_element_parsed_guard_(b, "myPromptFile_12", c)) break;
     }
     return true;

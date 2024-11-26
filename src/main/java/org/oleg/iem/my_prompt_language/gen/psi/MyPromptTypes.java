@@ -11,6 +11,7 @@ import org.oleg.iem.my_prompt_language.gen.psi.impl.*;
 public interface MyPromptTypes {
 
   IElementType CELL_VALUE = new MyPromptElementType("CELL_VALUE");
+  IElementType COMMENT = new MyPromptElementType("COMMENT");
   IElementType CONTEXT_CHUNKS = new MyPromptElementType("CONTEXT_CHUNKS");
   IElementType DETAILS = new MyPromptElementType("DETAILS");
   IElementType PROMPT = new MyPromptElementType("PROMPT");
@@ -20,7 +21,7 @@ public interface MyPromptTypes {
   IElementType VARIABLES = new MyPromptElementType("VARIABLES");
   IElementType VARIABLES_TABLE = new MyPromptElementType("VARIABLES_TABLE");
 
-  IElementType COMMENT = new MyPromptTokenType("comment");
+  IElementType COMMENT_VALUE = new MyPromptTokenType("COMMENT_VALUE");
   IElementType CONTEXT_CHUNKS_KEYWORD = new MyPromptTokenType("CONTEXT_CHUNKS_KEYWORD");
   IElementType DETAILS_KEYWORD = new MyPromptTokenType("DETAILS_KEYWORD");
   IElementType PIPE = new MyPromptTokenType("PIPE");
@@ -37,6 +38,9 @@ public interface MyPromptTypes {
       IElementType type = node.getElementType();
       if (type == CELL_VALUE) {
         return new MyPromptCellValueImpl(node);
+      }
+      else if (type == COMMENT) {
+        return new MyPromptCommentImpl(node);
       }
       else if (type == CONTEXT_CHUNKS) {
         return new MyPromptContextChunksImpl(node);

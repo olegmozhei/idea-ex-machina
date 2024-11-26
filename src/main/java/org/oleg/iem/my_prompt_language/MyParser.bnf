@@ -15,6 +15,8 @@
 
 myPromptFile ::= comment* context_chunks comment* query comment* details comment* prompt comment* variables* comment* variables_table* comment*
 
+comment ::= COMMENT_VALUE
+
 context_chunks ::= CONTEXT_CHUNKS_KEYWORD SEPARATOR VALUE_LINE
 query ::= QUERY_KEYWORD SEPARATOR (VALUE_LINE|VALUE_MULTILINE)
 details ::= DETAILS_KEYWORD SEPARATOR (VALUE_LINE|VALUE_MULTILINE)

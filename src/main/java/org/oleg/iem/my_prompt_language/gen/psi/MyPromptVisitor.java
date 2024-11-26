@@ -11,6 +11,10 @@ public class MyPromptVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitComment(@NotNull MyPromptComment o) {
+    visitPsiElement(o);
+  }
+
   public void visitContextChunks(@NotNull MyPromptContextChunks o) {
     visitPsiElement(o);
   }
