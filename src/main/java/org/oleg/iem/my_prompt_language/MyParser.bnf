@@ -9,7 +9,7 @@
   psiImplPackage="org.oleg.iem.my_prompt_language.gen.psi.impl"
 
   elementTypeHolderClass="org.oleg.iem.my_prompt_language.gen.psi.MyPromptTypes"
-  elementTypeClass="org.oleg.iem.my_prompt_language.gen.psi.MyPromptElementType"
+  elementTypeClass="org.oleg.iem.my_prompt_language.MyPromptElementType"
   tokenTypeClass="org.oleg.iem.my_prompt_language.gen.psi.MyPromptTokenType"
 }
 
