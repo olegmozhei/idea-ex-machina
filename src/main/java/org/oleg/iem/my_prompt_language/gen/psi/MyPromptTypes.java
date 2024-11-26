@@ -32,6 +32,7 @@ public interface MyPromptTypes {
   IElementType VALUE_LINE = new MyPromptTokenType("VALUE_LINE");
   IElementType VALUE_MULTILINE = new MyPromptTokenType("VALUE_MULTILINE");
   IElementType VARIABLES_KEYWORD = new MyPromptTokenType("VARIABLES_KEYWORD");
+  IElementType VARIABLES_SEPARATOR = new MyPromptTokenType("VARIABLES_SEPARATOR");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {

@@ -335,13 +335,13 @@ public class myPromptParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // VARIABLES_KEYWORD SEPARATOR
+  // VARIABLES_KEYWORD VARIABLES_SEPARATOR
   public static boolean variables(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "variables")) return false;
     if (!nextTokenIs(b, VARIABLES_KEYWORD)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, VARIABLES_KEYWORD, SEPARATOR);
+    r = consumeTokens(b, 0, VARIABLES_KEYWORD, VARIABLES_SEPARATOR);
     exit_section_(b, m, VARIABLES, r);
     return r;
   }

@@ -32,7 +32,7 @@ class GeneratedMyPromptLexer implements FlexLexer {
    * l is of the form l = 2*k, k a non negative integer
    */
   private static final int ZZ_LEXSTATE[] = {
-     0,  0,  1,  1,  1,  1,  1,  1,  1,  1,  1, 1
+     0,  0,  1,  1,  2,  2,  3,  3,  4,  4,  4, 4
   };
 
   /**
@@ -69,8 +69,14 @@ class GeneratedMyPromptLexer implements FlexLexer {
   private static final int [] ZZ_CMAP_BLOCKS = zzUnpackcmap_blocks();
 
   private static final String ZZ_CMAP_BLOCKS_PACKED_0 =
-    "\12\0\1\1\3\2\22\0\1\3\14\0\1\4\1\0"+
-    "\1\5\125\0\1\2\u01a2\0\2\2\326\0\u0100\6";
+    "\11\0\1\1\1\2\1\3\1\4\1\5\22\0\1\6"+
+    "\1\0\1\7\12\0\1\10\1\0\1\11\12\0\1\12"+
+    "\2\0\1\13\1\0\1\14\3\0\1\15\1\16\13\0"+
+    "\1\17\1\20\4\0\1\21\12\0\1\22\1\23\2\0"+
+    "\1\24\2\0\1\25\1\26\1\0\1\27\1\30\1\31"+
+    "\1\32\1\33\1\34\1\0\1\35\1\36\1\37\1\40"+
+    "\2\0\1\41\1\42\2\0\1\43\10\0\1\3\u01a2\0"+
+    "\2\3\326\0\u0100\44";
 
   private static int [] zzUnpackcmap_blocks() {
     int [] result = new int[1024];
@@ -97,10 +103,14 @@ class GeneratedMyPromptLexer implements FlexLexer {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\6\0\1\1\2\0";
+    "\5\0\1\1\2\2\6\1\1\3\1\1\2\4\1\2"+
+    "\1\4\1\1\1\3\1\1\2\2\1\3\1\5\10\0"+
+    "\6\6\4\0\1\7\6\0\1\4\16\0\1\10\5\0"+
+    "\1\11\4\0\1\12\10\0\1\13\11\0\1\14\3\0"+
+    "\1\15\3\0\1\16";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[9];
+    int [] result = new int[106];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -125,11 +135,23 @@ class GeneratedMyPromptLexer implements FlexLexer {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\7\0\16\0\25\0\34\0\43\0\34\0\52"+
-    "\0\61";
+    "\0\0\0\45\0\112\0\157\0\224\0\271\0\336\0\u0103"+
+    "\0\u0128\0\u014d\0\u0172\0\u0197\0\u01bc\0\u01e1\0\u0206\0\u022b"+
+    "\0\u0250\0\336\0\u0275\0\u0275\0\u029a\0\u02bf\0\u02e4\0\u0309"+
+    "\0\u032e\0\u0353\0\271\0\u0378\0\u039d\0\u03c2\0\u03e7\0\u040c"+
+    "\0\u0431\0\u0456\0\u022b\0\u047b\0\u022b\0\u04a0\0\u0275\0\u0250"+
+    "\0\u04c5\0\u04ea\0\u02e4\0\u050f\0\u0534\0\u0378\0\u0559\0\u057e"+
+    "\0\u05a3\0\u05c8\0\u05ed\0\u0612\0\u0637\0\u065c\0\u0681\0\u06a6"+
+    "\0\u06cb\0\u06f0\0\u0715\0\u073a\0\u075f\0\u0784\0\u07a9\0\u07ce"+
+    "\0\u07f3\0\u0818\0\u083d\0\271\0\u0862\0\u0887\0\u08ac\0\u08d1"+
+    "\0\u08f6\0\271\0\u091b\0\u0940\0\u0965\0\u098a\0\271\0\u09af"+
+    "\0\u09d4\0\u09f9\0\u0a1e\0\u0a43\0\u0a68\0\u0a8d\0\u0ab2\0\271"+
+    "\0\u0ad7\0\u0afc\0\u0b21\0\u0b46\0\u0b6b\0\u0b90\0\u0bb5\0\u0bda"+
+    "\0\u0bff\0\u0bb5\0\u0c24\0\u0c49\0\u0c6e\0\u0c93\0\u0cb8\0\u014d"+
+    "\0\u0cdd\0\271";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[9];
+    int [] result = new int[106];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -152,13 +174,45 @@ class GeneratedMyPromptLexer implements FlexLexer {
   private static final int [] ZZ_TRANS = zzUnpacktrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\0\1\3\3\0\1\4\14\0\1\5\7\0\1\6"+
-    "\2\0\2\7\7\0\1\10\3\0\1\10\2\0\1\10"+
-    "\1\11\1\10\1\0\1\10\2\7\1\10\1\11\1\10"+
-    "\1\0";
+    "\1\6\1\7\1\10\4\7\2\6\1\11\3\6\1\12"+
+    "\1\13\1\14\1\15\1\16\21\6\1\17\1\6\1\20"+
+    "\1\21\1\22\1\23\1\24\1\23\1\21\1\25\33\20"+
+    "\1\26\1\20\1\27\1\30\1\31\3\7\1\30\34\27"+
+    "\1\32\2\6\6\7\3\6\2\33\27\6\1\17\2\6"+
+    "\6\7\34\6\1\17\1\6\46\0\6\7\37\0\6\7"+
+    "\1\0\1\34\45\0\1\35\66\0\1\36\35\0\1\37"+
+    "\55\0\1\40\47\0\1\41\26\0\1\42\30\0\1\17"+
+    "\36\0\2\43\1\44\3\45\40\43\1\21\1\46\1\47"+
+    "\1\50\1\47\1\21\37\43\1\23\1\51\3\47\1\23"+
+    "\36\43\7\0\1\52\35\0\2\43\1\44\3\45\1\26"+
+    "\36\43\2\53\1\54\3\0\36\53\1\0\1\53\1\30"+
+    "\1\31\3\7\1\30\35\53\2\0\6\7\5\0\1\55"+
+    "\30\0\2\53\1\54\3\0\1\32\35\53\3\0\4\56"+
+    "\45\0\1\57\70\0\1\60\51\0\1\61\40\0\1\62"+
+    "\35\0\1\63\55\0\1\64\11\0\4\44\40\0\1\65"+
+    "\1\46\1\51\1\46\1\51\1\65\37\0\1\7\4\51"+
+    "\1\7\45\0\1\66\51\0\1\55\43\0\1\67\31\0"+
+    "\2\57\4\0\2\57\1\70\33\57\40\0\1\71\27\0"+
+    "\1\72\53\0\1\73\50\0\1\74\35\0\1\75\17\0"+
+    "\2\65\1\7\1\65\1\7\1\65\40\0\3\76\1\77"+
+    "\57\0\1\100\24\0\2\57\4\56\2\57\1\70\33\57"+
+    "\25\0\1\101\46\0\1\102\52\0\1\103\52\0\1\104"+
+    "\24\0\1\105\22\0\2\106\1\0\4\106\1\0\37\106"+
+    "\1\76\4\106\1\0\35\106\40\0\1\107\45\0\1\110"+
+    "\33\0\1\111\53\0\1\112\30\0\1\113\21\0\2\114"+
+    "\1\0\4\114\1\0\35\114\24\0\1\115\57\0\1\116"+
+    "\43\0\1\117\36\0\1\120\14\0\2\121\1\0\4\121"+
+    "\1\0\35\121\35\0\1\122\15\0\1\123\62\0\1\124"+
+    "\20\0\2\121\1\125\4\121\1\0\35\121\42\0\1\126"+
+    "\17\0\1\127\65\0\1\130\6\0\2\106\1\0\4\106"+
+    "\1\131\35\106\43\0\1\132\26\0\1\133\26\0\1\134"+
+    "\53\0\1\135\66\0\1\136\13\0\1\137\61\0\1\140"+
+    "\52\0\1\141\14\0\4\142\76\0\1\143\34\0\1\144"+
+    "\37\0\1\145\60\0\1\146\34\0\1\147\33\0\1\150"+
+    "\57\0\1\151\52\0\1\152\6\0";
 
   private static int [] zzUnpacktrans() {
-    int [] result = new int[56];
+    int [] result = new int[3330];
     int offset = 0;
     offset = zzUnpacktrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -196,10 +250,12 @@ class GeneratedMyPromptLexer implements FlexLexer {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\1\0\1\10\4\0\1\1\2\0";
+    "\5\0\1\11\24\1\1\11\10\0\6\1\4\0\1\1"+
+    "\6\0\1\1\16\0\1\11\5\0\1\11\4\0\1\11"+
+    "\10\0\1\11\11\0\1\1\3\0\1\1\3\0\1\11";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[9];
+    int [] result = new int[106];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -521,10 +577,75 @@ class GeneratedMyPromptLexer implements FlexLexer {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1:
+            { return TokenType.BAD_CHARACTER;
+            }
+          // fall through
+          case 15: break;
+          case 2:
+            { yybegin(YYINITIAL); return TokenType.WHITE_SPACE;
+            }
+          // fall through
+          case 16: break;
+          case 3:
+            { yybegin(WAITING_CELL); return MyPromptTypes.PIPE;
+            }
+          // fall through
+          case 17: break;
+          case 4:
+            { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE;
+            }
+          // fall through
+          case 18: break;
+          case 5:
+            { yybegin(WAITING_VALUE); return MyPromptTypes.SEPARATOR;
+            }
+          // fall through
+          case 19: break;
+          case 6:
+            { yybegin(YYINITIAL); return MyPromptTypes.VALUE_LINE;
+            }
+          // fall through
+          case 20: break;
+          case 7:
             { yybegin(YYINITIAL); return MyPromptTypes.COMMENT_VALUE;
             }
           // fall through
-          case 2: break;
+          case 21: break;
+          case 8:
+            { yybegin(WAITING_SEPARATOR); return MyPromptTypes.QUERY_KEYWORD;
+            }
+          // fall through
+          case 22: break;
+          case 9:
+            { yybegin(WAITING_SEPARATOR); return MyPromptTypes.PROMPT_KEYWORD;
+            }
+          // fall through
+          case 23: break;
+          case 10:
+            { yybegin(WAITING_SEPARATOR); return MyPromptTypes.DETAILS_KEYWORD;
+            }
+          // fall through
+          case 24: break;
+          case 11:
+            { yybegin(WAITING_SEPARATOR); return MyPromptTypes.VARIABLES_KEYWORD;
+            }
+          // fall through
+          case 25: break;
+          case 12:
+            { yybegin(YYINITIAL); return MyPromptTypes.VALUE_MULTILINE;
+            }
+          // fall through
+          case 26: break;
+          case 13:
+            { yybegin(WAITING_SEPARATOR); return MyPromptTypes.CONTEXT_CHUNKS_KEYWORD;
+            }
+          // fall through
+          case 27: break;
+          case 14:
+            { yybegin(WAITING_CELL); return MyPromptTypes.VALUE;
+            }
+          // fall through
+          case 28: break;
           default:
             zzScanError(ZZ_NO_MATCH);
           }
