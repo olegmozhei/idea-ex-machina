@@ -12,6 +12,9 @@ import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
 
+import org.oleg.iem.my_prompt_language.gen.parser.myPromptParser;
+import org.oleg.iem.my_prompt_language.gen.psi.MyPromptTypes;
+
 final class MyPromptParserDefinition implements ParserDefinition {
 
     public static final IFileElementType FILE = new IFileElementType(MyPromptLanguage.INSTANCE);
@@ -27,27 +30,28 @@ final class MyPromptParserDefinition implements ParserDefinition {
     }
 
     @Override
+    public @NotNull TokenSet getStringLiteralElements() {
+        return TokenSet.EMPTY;
+    }
+
+    @Override
     public @NotNull PsiParser createParser(Project project) {
-        return null;
+        return new myPromptParser();
     }
 
     @Override
     public @NotNull IFileElementType getFileNodeType() {
-        return null;
-    }
-
-    @Override
-    public @NotNull TokenSet getStringLiteralElements() {
-        return null;
-    }
-
-    @Override
-    public @NotNull PsiElement createElement(ASTNode astNode) {
-        return null;
+        return FILE;
     }
 
     @Override
     public @NotNull PsiFile createFile(@NotNull FileViewProvider fileViewProvider) {
-        return null;
+        return new MyPromptFile(fileViewProvider);
     }
+
+    @Override
+    public @NotNull PsiElement createElement(ASTNode astNode) {
+        return MyPromptTypes.Factory.createElement(astNode);
+    }
+
 }
