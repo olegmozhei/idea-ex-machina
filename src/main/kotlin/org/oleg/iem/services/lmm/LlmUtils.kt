@@ -31,16 +31,19 @@ import kotlin.io.path.absolutePathString
 class LlmUtils(private val project: Project) {
 
     fun prepareRequest(request: AskLLMRequest) {
-        request.prompt = if (request.contextData != null && request.promptTemplate != null) {
-            if (!request.contextData.containsKey("query")) {
-                request.contextData["query"] = request.query!!
-            }
+        if (!request.contextData.containsKey("query")) {
+            request.contextData["query"] = request.query!!
+        }
+        println("Preparing request...")
+        request.prompt = if (request.promptTemplate != null) {
+            println("Processing prompt...")
             TransformText.transformString(request.promptTemplate, request.contextData)
         } else {
+            println("Not enough data to process prompt")
             request.query!!
         }
         if (request.useRAG) {
-            val context = prepareRagContext(request.query!!)
+            val context = prepareRagContext(request.query!!, request.contextChunksNumber)
             request.prompt = addProjectContextToPrompt(context, request.prompt!!)
         }
     }
@@ -65,7 +68,7 @@ class LlmUtils(private val project: Project) {
         return result
     }
 
-    private fun prepareRagContext(query: String): List<JsonWithInt.Value> {
+    private fun prepareRagContext(query: String, contextChunksNumber: Int): List<JsonWithInt.Value> {
         val projectService = project.service<MySettings>()
 
         val directoryPath = projectService.state.PATH_TO_PROJECT_CONTEXT
@@ -156,16 +159,19 @@ class LlmUtils(private val project: Project) {
         val minScore = EMBEDDING_MIN_SCORE.toDouble()
 
         println("Started Search:")
-        val searchResult =
-            client.queryAsync(
-                Points.QueryPoints.newBuilder()
-                    .setCollectionName("test_collection")
-                    .setLimit(maxResults + 0L)
-                    .setScoreThreshold(minScore.toFloat())
-                    .setQuery(nearest(queryAsVectorData.vectorAsList()))
-                    .setWithPayload(enable(true))
-                    .build()
-            ).get()
+        val request = Points.QueryPoints.newBuilder()
+            .setCollectionName("test_collection")
+            .setScoreThreshold(minScore.toFloat())
+            .setQuery(nearest(queryAsVectorData.vectorAsList()))
+            .setWithPayload(enable(true))
+
+        if (contextChunksNumber != 0){
+            request.setLimit(contextChunksNumber + 0L)
+        } else {
+            request.setLimit(maxResults + 0L)
+        }
+
+        val searchResult = client.queryAsync(request.build()).get()
 
         println(searchResult)
 

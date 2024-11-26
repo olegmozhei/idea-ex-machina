@@ -18,26 +18,33 @@ public class TransformText {
                 String key = m.group(i);
                 key = key.substring(3, key.indexOf(" }}"));
                 String[] functionToApply = key.split("\\|");
-                String convertingResult = "";
-
-                for (String function: functionToApply){
-                    function = function.trim();
-                    if (substitution.containsKey(function)){
-                        String replacement = substitution.get(function);
-                        if (replacement == null){
-                            String error = "Trying to get convert value '" + function + "'\n";
-                            error+= "Context has this value, but converting result is null\n";
-                            error+= "Please correct application implementation";
-                            throw new RuntimeException(error);
-                        }
-                    } else {
-                        throw new RuntimeException("Can't replace value '" + function + "'");
-                    }
-                }
+                String convertingResult = getStringForReplacement(functionToApply, substitution);
                 input = input.replaceFirst("\\{\\{ ([^}]*) }}", Matcher.quoteReplacement(convertingResult));
             }
         }
         return input;
+    }
+
+    /*
+    This method should include context search and mathematics functions
+     */
+    private static String getStringForReplacement(String[] functionToApply, HashMap<String, String> substitution){
+        for (String function: functionToApply){
+            function = function.trim();
+            if (substitution.containsKey(function)){
+                String replacement = substitution.get(function);
+                if (replacement == null){
+                    String error = "Trying to get convert value '" + function + "'\n";
+                    error+= "Context has this value, but converting result is null\n";
+                    error+= "Please correct application implementation";
+                    throw new RuntimeException(error);
+                }
+                return replacement;
+            } else {
+                throw new RuntimeException("Can't replace value '" + function + "'");
+            }
+        }
+        throw new RuntimeException("Not implemented yet");
     }
 
 
