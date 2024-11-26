@@ -5,12 +5,12 @@
 
   psiClassPrefix="MyPrompt"
   psiImplClassSuffix="Impl"
-  psiPackage="org.oleg.iem.my_prompt_language.psi"
-  psiImplPackage="org.oleg.iem.my_prompt_language.psi.impl"
+  psiPackage="org.oleg.iem.my_prompt_language.gen.psi"
+  psiImplPackage="org.oleg.iem.my_prompt_language.gen.psi.impl"
 
   elementTypeHolderClass="org.oleg.iem.my_prompt_language.gen.psi.MyPromptTypes"
-  elementTypeClass="org.oleg.iem.my_prompt_language.psi.MyPromptElementType"
-  tokenTypeClass="org.oleg.iem.my_prompt_language.psi.MyPromptTokenType"
+  elementTypeClass="org.oleg.iem.my_prompt_language.gen.psi.MyPromptElementType"
+  tokenTypeClass="org.oleg.iem.my_prompt_language.gen.psi.MyPromptTokenType"
 }
 
 myPromptFile ::= comment* context_chunks comment* query comment* details comment* prompt comment* variables* comment* variables_table* comment*
