@@ -11,6 +11,8 @@ import org.oleg.iem.MyToolWindow
 import org.oleg.iem.listeners.LlmRequestReceivedListener
 import org.oleg.iem.my_prompt_language.MyPromptFile
 import org.oleg.iem.my_prompt_language.MyPromptIcons
+import org.oleg.iem.my_prompt_language.gen.psi.MyPromptContextChunks
+import org.oleg.iem.my_prompt_language.gen.psi.MyPromptDetails
 import org.oleg.iem.my_prompt_language.gen.psi.impl.MyPromptContextChunksImpl
 import org.oleg.iem.my_prompt_language.gen.psi.impl.MyPromptDetailsImpl
 import org.oleg.iem.my_prompt_language.gen.psi.impl.MyPromptPromptImpl
@@ -71,9 +73,40 @@ class Temp : GutterIconNavigationHandler<PsiElement?> {
         requestPublisher.requestReceived(request)
     }
 
-    private fun processContextChunks()
+    private fun processContextChunks(contextChunks: MyPromptContextChunks, requestBuilder: AskLLMRequest.Builder){
+        val chunksNumber = contextChunks.text.replace("=", ":")
+            .split(":")[1]
+            .replace(" ", "")
+            .replace("\n", "")
+            .toInt()
+        if (chunksNumber != 0){
+            requestBuilder.contextChunksNumber = chunksNumber
+            requestBuilder.useRAG = true
+        }
+    }
 
     private fun processQueryElement(queryElement: MyPromptQueryImpl, requestBuilder: AskLLMRequest.Builder){
+        val query = queryElement.text.replace("Query:", "")
+            .replace("^\n+", "")
+            .replace("\n+$", "")
+        println("Found query element $query")
+        requestBuilder.query(query)
+    }
 
+    private fun processDetailsElement(details: MyPromptDetails, requestBuilder: AskLLMRequest.Builder){
+        val valueToAdd = details.text.replace("Details:", "")
+            .replace("^\n+", "")
+        requestBuilder.contextData("details", valueToAdd)
+    }
+
+    private fun processPromptElement(promptElement: MyPromptPromptImpl, requestBuilder: AskLLMRequest.Builder){
+        var template: String = promptElement.text.replace("Prompt:", "")
+            .replace("^\n+", "")
+            .replace("\n+$", "")
+        if (template.startsWith("\"\"\"") && template.endsWith("\"\"\"")){
+            template = template.substring(3, template.length - 3)
+        }
+        requestBuilder.promptTemplate(template)
+        println("Added template: $template")
     }
 }
