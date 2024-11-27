@@ -40,7 +40,7 @@ PIPE=[]*\|[ ]*
 %%
 // Rules (Token Matching Rules) part:
 // This rule applies only when the lexer is in the YYINITIAL state.
-<YYINITIAL> {COMMENT}-{CRLF}+                                          { yybegin(YYINITIAL); return MyPromptTypes.COMMENT_VALUE; }
+<YYINITIAL> {COMMENT}{CRLF}+                                           { yybegin(YYINITIAL); return MyPromptTypes.COMMENT_VALUE; }
 
 <YYINITIAL> {CONTEXT_CHUNKS_KEYWORD}+                                  { yybegin(WAITING_SEPARATOR); return MyPromptTypes.CONTEXT_CHUNKS_KEYWORD; }
 
