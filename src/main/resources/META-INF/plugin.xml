@@ -43,8 +43,12 @@
                   fieldName="INSTANCE"
                   language="MyPrompt"
                   extensions="my_prompt"/>
+
         <lang.parserDefinition language="MyPrompt"
                                implementationClass="org.oleg.iem.my_prompt_language.MyPromptParserDefinition"/>
+
+        <codeInsight.lineMarkerProvider language="MyPrompt"
+                                        implementationClass="org.oleg.iem.my_prompt_language.line_marker.CustomLineMarkerProvider" />
     </extensions>
     <actions>
 
