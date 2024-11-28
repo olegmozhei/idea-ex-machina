@@ -1,5 +1,6 @@
 package org.oleg.iem.services.lmm
 
+import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.databind.ObjectMapper
 import dev.langchain4j.data.embedding.Embedding
 import org.json.JSONObject
@@ -10,7 +11,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.nio.charset.StandardCharsets
 
-class LlmClient {
+class LlmClient(private val API_ENDPOINT: String) {
 
     fun queryLLM(model: String, query: String): String {
         println("sending request to llm")
@@ -23,7 +24,7 @@ class LlmClient {
         payload.put("prompt", query)
         println(query)
 
-        val response = getApiRequestFromLLM(OLLAMA_LLM_MODEL_API_URL, payload, true)
+        val response = getApiRequestFromLLM(API_ENDPOINT + OLLAMA_LLM_MODEL_API_ENDPOINT, payload, true)
         return response
     }
 
@@ -35,11 +36,19 @@ class LlmClient {
         val mapper = ObjectMapper()
 
         val payload = mapper.writeValueAsString(embeddingRequest)
-        val response = getApiRequestFromLLM(OLLAMA_EMBEDDING_MODEL_API_URL, payload, false)
-        val embeddingResponse = mapper.readValue(response, EmbeddingResponse::class.java)
+        val response = getApiRequestFromLLM(API_ENDPOINT + OLLAMA_EMBEDDING_MODEL_API_ENDPOINT, payload, false)
+        val embeddingResponse = try {
+            mapper.readValue(response, EmbeddingResponse::class.java)
+        } catch (e: JsonParseException) {
+            println("Can't get response from embedding model")
+            println("Response: $response")
+            println("URL: $API_ENDPOINT$OLLAMA_EMBEDDING_MODEL_API_ENDPOINT")
+            println("Payload: $payload")
+            throw RuntimeException(e)
+        }
         val data = Embedding(embeddingResponse.embeddings)
         if (data.vector().isEmpty()){
-            throw RuntimeException("Something is going wrong. No vector data. URL:$OLLAMA_EMBEDDING_MODEL_API_URL. Payload: $payload")
+            throw RuntimeException("Something is going wrong. No vector data. URL:$API_ENDPOINT$OLLAMA_EMBEDDING_MODEL_API_ENDPOINT. Payload: $payload")
         }
         return data
     }

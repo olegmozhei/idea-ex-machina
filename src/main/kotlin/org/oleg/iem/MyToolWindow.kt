@@ -21,10 +21,9 @@ import java.nio.file.Paths
 import javax.swing.*
 import javax.swing.event.DocumentEvent
 
-object MyToolWindow : LlmResponseReadyListener, LlmRequestProcessedListener {
+class MyToolWindow(private val project: Project) : LlmResponseReadyListener, LlmRequestProcessedListener {
     private val myPanel = JPanel(BorderLayout())  // main container that can hold other UI components
     private val chatArea = JTextArea(20, 50)  // displays chat messages
-    var project: Project? = null
 
     init {
         // Custom dropdown menu simulation using a button and popup menu
@@ -40,15 +39,34 @@ object MyToolWindow : LlmResponseReadyListener, LlmRequestProcessedListener {
         val contextPathItem = JMenuItem("Context path")
         val minScoreItem = JMenuItem("Min Score")
         val maxResults = JMenuItem("Max Results")
+        val vectorDataBaseEndpoint = JMenuItem("Vector Database endpoint")
 
         popupMenu.add(apiEndpointItem)
         popupMenu.add(contextPathItem)
         popupMenu.add(minScoreItem)
         popupMenu.add(maxResults)
+        popupMenu.add(vectorDataBaseEndpoint)
+
+        val projectService = project.service<MySettings>()
 
         // Display popup when button is clicked
         settingsButton.addActionListener {
             popupMenu.show(settingsButton, 0, settingsButton.height)
+        }
+
+        vectorDataBaseEndpoint.addActionListener {
+            val input = JOptionPane.showInputDialog(
+                myPanel,
+                "Enter URL for Vector Database (without port)",
+                "Vector Database URL Configuration",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                null,
+                projectService.state.QDRANT_HOST
+            ) as String?
+            if (!input.isNullOrBlank()){
+                projectService.state.QDRANT_HOST = input
+            }
         }
 
         minScoreItem.addActionListener {
@@ -89,11 +107,11 @@ object MyToolWindow : LlmResponseReadyListener, LlmRequestProcessedListener {
                 JOptionPane.PLAIN_MESSAGE,
                 null,
                 null,
-                API_ENDPOINT
+                projectService.state.API_ENDPOINT
             ) as String?
             if (!input.isNullOrBlank()){
-                API_ENDPOINT = input
-                println("API endpoint updated to: $API_ENDPOINT")
+                projectService.state.API_ENDPOINT = input
+                println("API endpoint updated to: $input")
             }
         }
 

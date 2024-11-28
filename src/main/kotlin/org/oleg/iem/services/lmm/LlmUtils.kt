@@ -70,6 +70,7 @@ class LlmUtils(private val project: Project) {
 
     private fun prepareRagContext(query: String, contextChunksNumber: Int): List<JsonWithInt.Value> {
         val projectService = project.service<MySettings>()
+        val llmClient = LlmClient(projectService.state.API_ENDPOINT!!)
 
         val directoryPath = projectService.state.PATH_TO_PROJECT_CONTEXT
         val path = Paths.get(directoryPath)
@@ -129,7 +130,7 @@ class LlmUtils(private val project: Project) {
                 val segments = splitter.split(Document.document(file))
 
                 // TODO: Use tokenizer to count tokens and provide some feedback to user
-                val embeddings = getOllamaEmbeddings(segments)
+                val embeddings = getOllamaEmbeddings(segments, llmClient)
                 println("Generated ${embeddings.size} embeddings")
                 if (embeddings.isEmpty()) continue
                 val vectorData = ArrayList<PointStruct>()
@@ -154,7 +155,7 @@ class LlmUtils(private val project: Project) {
 
 
 
-        val queryAsVectorData = LlmClient().getVectorData(query)
+        val queryAsVectorData = llmClient.getVectorData(query)
         val maxResults = EMBEDDING_MAX_RESULTS.toInt()
         val minScore = EMBEDDING_MIN_SCORE.toDouble()
 
@@ -182,11 +183,11 @@ class LlmUtils(private val project: Project) {
         return content
     }
 
-    fun getOllamaEmbeddings(segments: List<TextSegment>): List<Embedding> {
+    fun getOllamaEmbeddings(segments: List<TextSegment>, llmClient: LlmClient): List<Embedding> {
         return try {
             val result: MutableList<Embedding> = ArrayList()
             for (segment in segments){
-                val data = getVectorData(segment)
+                val data = getVectorData(segment, llmClient)
                 result.add(data)
             }
             result
@@ -195,8 +196,8 @@ class LlmUtils(private val project: Project) {
         }
     }
 
-    private fun getVectorData(segment: TextSegment): Embedding {
-        return LlmClient().getVectorData(segment.text())
+    private fun getVectorData(segment: TextSegment, llmClient: LlmClient): Embedding {
+        return llmClient.getVectorData(segment.text())
     }
 
     private fun addProjectContextToPrompt(context: List<JsonWithInt.Value>, prompt: String): String {

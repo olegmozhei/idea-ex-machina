@@ -8,13 +8,12 @@ val MY_DATA_KEY: DataKey<String> = DataKey.create("MY_DATA_KEY")
 // Should be equal to values in plugin.xml
 const val AI_ASSISTANT_CHAT_ID = "MyCustomAiAssistantChatId"
 
-var API_ENDPOINT = "http://127.0.0.1:11434/api"
 
-var OLLAMA_LLM_MODEL_API_URL: String = "$API_ENDPOINT/generate"
+var OLLAMA_LLM_MODEL_API_ENDPOINT: String = "/generate"
 const val OLLAMA_DEFAULT_LLM_MODEL: String = "mistral-nemo"
 const val OLLAMA_LLM_MODEL_TOKENS: Int = 128000
 
-var OLLAMA_EMBEDDING_MODEL_API_URL: String = "$API_ENDPOINT/embeddings"
+var OLLAMA_EMBEDDING_MODEL_API_ENDPOINT: String = "/embeddings"
 const val OLLAMA_DEFAULT_EMBEDDING_MODEL: String = "nomic-embed-text"
 const val OLLAMA_EMBEDDING_MODEL_TOKENS: Int = 8192
 

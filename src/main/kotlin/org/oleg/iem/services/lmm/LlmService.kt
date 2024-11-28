@@ -1,9 +1,11 @@
 package org.oleg.iem.services.lmm
 
 import com.intellij.openapi.components.Service
+import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import org.oleg.iem.MySettings
 import org.oleg.iem.listeners.LlmRequestProcessedListener
 import org.oleg.iem.listeners.LlmRequestReceivedListener
 import org.oleg.iem.listeners.LlmResponseReadyListener
@@ -24,7 +26,9 @@ class LlmService (
                 .syncPublisher(LlmRequestProcessedListener.LLM_REQUEST_PROCESSED_TOPIC)
             requestPublisher.requestProcessed(request)
 
-            val client = LlmClient()
+            val projectService = project.service<MySettings>()
+
+            val client = LlmClient(projectService.state.API_ENDPOINT!!)
             val stringResponse = client.queryLLM(request.model, request.prompt!!)
             val response = AskLLMResponse(request.prompt, request.promptTemplate, request.query, stringResponse)
 
