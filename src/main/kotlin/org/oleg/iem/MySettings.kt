@@ -13,4 +13,5 @@ class MyState : BaseState() {
     var QDRANT_PORT by property(6334)
 
     var PATH_TO_PROJECT_CONTEXT by string("")
+    var API_ENDPOINT by string("http://127.0.0.1:11434/api")
 }

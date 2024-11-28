@@ -4,6 +4,9 @@ import com.intellij.codeInsight.daemon.GutterIconNavigationHandler
 import com.intellij.codeInsight.daemon.LineMarkerInfo
 import com.intellij.codeInsight.daemon.LineMarkerProvider
 import com.intellij.openapi.editor.markup.GutterIconRenderer
+import com.intellij.openapi.project.Project
+import com.intellij.openapi.wm.ToolWindow
+import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiRecursiveElementVisitor
 import org.jetbrains.annotations.NotNull
@@ -13,17 +16,13 @@ import org.oleg.iem.my_prompt_language.MyPromptFile
 import org.oleg.iem.my_prompt_language.MyPromptIcons
 import org.oleg.iem.my_prompt_language.gen.psi.MyPromptContextChunks
 import org.oleg.iem.my_prompt_language.gen.psi.MyPromptDetails
-import org.oleg.iem.my_prompt_language.gen.psi.impl.MyPromptContextChunksImpl
-import org.oleg.iem.my_prompt_language.gen.psi.impl.MyPromptDetailsImpl
-import org.oleg.iem.my_prompt_language.gen.psi.impl.MyPromptPromptImpl
-import org.oleg.iem.my_prompt_language.gen.psi.impl.MyPromptQueryImpl
-import org.oleg.iem.my_prompt_language.gen.psi.impl.MyPromptTableHeaderImpl
-import org.oleg.iem.my_prompt_language.gen.psi.impl.MyPromptTableRowImpl
-import org.oleg.iem.my_prompt_language.gen.psi.impl.MyPromptVariablesImpl
+import org.oleg.iem.my_prompt_language.gen.psi.impl.*
 import org.oleg.iem.services.lmm.AskLLMRequest
 import java.awt.event.MouseEvent
 
+
 internal class CustomLineMarkerProvider : LineMarkerProvider {
+    // The PsiElement contains a reference to the project it belongs to
     override fun getLineMarkerInfo(element: PsiElement): LineMarkerInfo<*>? {
         return if (element.text == "Query") {
             println("Trying to return line marker")
@@ -32,7 +31,7 @@ internal class CustomLineMarkerProvider : LineMarkerProvider {
                 element.textRange,
                 MyPromptIcons.FILE,
                 null,
-                Temp(),
+                Temp(element.project),
                 GutterIconRenderer.Alignment.CENTER
             )
         } else {
@@ -41,7 +40,7 @@ internal class CustomLineMarkerProvider : LineMarkerProvider {
     }
 }
 
-class Temp : GutterIconNavigationHandler<PsiElement?> {
+class Temp(private val project: Project) : GutterIconNavigationHandler<PsiElement?> {
     override fun navigate(p0: MouseEvent?, p1: PsiElement?) {
         val parent = p1!!.parent
         if (parent !is MyPromptQueryImpl) return
@@ -70,7 +69,10 @@ class Temp : GutterIconNavigationHandler<PsiElement?> {
 
         val request = requestBuilder.build()
 
-        val requestPublisher: LlmRequestReceivedListener = MyToolWindow.project!!.messageBus
+//        val toolWindow: ToolWindow? = ToolWindowManager.getInstance(project).getToolWindow("MyToolWindow")
+//        toolWindow?.activate(null)
+
+        val requestPublisher: LlmRequestReceivedListener = project.messageBus
             .syncPublisher(LlmRequestReceivedListener.LLM_REQUEST_RECEIVED_TOPIC)
         requestPublisher.requestReceived(request)
     }
