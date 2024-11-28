@@ -17,6 +17,8 @@ import org.oleg.iem.my_prompt_language.gen.psi.impl.MyPromptContextChunksImpl
 import org.oleg.iem.my_prompt_language.gen.psi.impl.MyPromptDetailsImpl
 import org.oleg.iem.my_prompt_language.gen.psi.impl.MyPromptPromptImpl
 import org.oleg.iem.my_prompt_language.gen.psi.impl.MyPromptQueryImpl
+import org.oleg.iem.my_prompt_language.gen.psi.impl.MyPromptTableHeaderImpl
+import org.oleg.iem.my_prompt_language.gen.psi.impl.MyPromptTableRowImpl
 import org.oleg.iem.my_prompt_language.gen.psi.impl.MyPromptVariablesImpl
 import org.oleg.iem.services.lmm.AskLLMRequest
 import java.awt.event.MouseEvent
@@ -108,5 +110,29 @@ class Temp : GutterIconNavigationHandler<PsiElement?> {
         }
         requestBuilder.promptTemplate(template)
         println("Added template: $template")
+    }
+
+    private fun processVariablesElement(variablesElement: MyPromptVariablesImpl, requestBuilder: AskLLMRequest.Builder){
+        var headers = ""
+        var variables = ""
+        var context = HashMap<String, String>()
+        variablesElement.accept(object : PsiRecursiveElementVisitor() {
+            override fun visitElement(@NotNull element: PsiElement) {
+                super.visitElement(element)
+                if (element is MyPromptTableHeaderImpl){
+                    headers = element.text
+                } else if (element is MyPromptTableRowImpl){
+                    variables = element.text
+                }
+            }
+        })
+
+        val h = headers.split("|")
+        val v = variables.split("|")
+        for (i in h.indices){
+            if (h[i] == "") continue
+            context[h[i].trim()] = v[i].trim()
+        }
+        requestBuilder.contextData(context)
     }
 }
