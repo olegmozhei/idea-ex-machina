@@ -1,7 +1,5 @@
 package org.oleg.iem.services.lmm
 
-import org.oleg.iem.OLLAMA_DEFAULT_LLM_MODEL
-
 class AskLLMRequest private constructor(builder: Builder) {
     val query: String?
     val useRAG: Boolean
