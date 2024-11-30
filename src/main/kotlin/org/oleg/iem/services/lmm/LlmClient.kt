@@ -2,58 +2,81 @@ package org.oleg.iem.services.lmm
 
 import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.intellij.platform.ml.embeddings.utils.generateEmbeddingBlocking
 import dev.langchain4j.data.embedding.Embedding
+import dev.langchain4j.data.segment.TextSegment
 import org.json.JSONObject
 import org.oleg.iem.*
+import org.oleg.iem.llm_models.LlmModel
 import java.io.BufferedReader
+import java.io.IOException
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 import java.nio.charset.StandardCharsets
 
-class LlmClient(private val API_ENDPOINT: String) {
+class LlmClient(
+    private val apiEndpoint: String,
+    private val queryEndpoint: String,
+    private val embeddingEndpoint: String,
+    private val taskLLM: LlmModel,
+    private val embeddingLLM: LlmModel
+) {
 
-    fun queryLLM(model: String, query: String): String {
+    fun queryLLM(query: String): String {
         println("sending request to llm")
-        val tokensUsed: Double = query.length / 4.0
-        println("Tokens used " + tokensUsed + " (" + (tokensUsed / OLLAMA_LLM_MODEL_TOKENS * 100) + "% of allowed)")
+        val tokensUsed = LlmUtils.tokensUsed(query.length)
+        println("Tokens used " + tokensUsed + " (" + (tokensUsed / taskLLM.tokensNumber * 100) + "% of allowed)")
 
         // Create JSON request body with model and prompt
         val payload = JSONObject()
-        payload.put("model", model)
+        payload.put("model", taskLLM.modelName)
         payload.put("prompt", query)
         println(query)
 
-        val response = getApiRequestFromLLM(API_ENDPOINT + OLLAMA_LLM_MODEL_API_ENDPOINT, payload, true)
+        val response = sendApiRequestToLlm(apiEndpoint + queryEndpoint, payload.toString(), true)
         return response
     }
 
     fun getVectorData(query: String): Embedding {
-        val tokensUsed: Double = query.length / 4.0
-        println("Tokens used " + tokensUsed + " (" + (tokensUsed / OLLAMA_EMBEDDING_MODEL_TOKENS * 100) + "% of allowed)")
+        val tokensUsed = LlmUtils.tokensUsed(query.length)
+        println("Tokens used " + tokensUsed + " (" + (tokensUsed / embeddingLLM.tokensNumber * 100) + "% of allowed)")
 
-        val embeddingRequest = EmbeddingRequest(query, OLLAMA_DEFAULT_EMBEDDING_MODEL)
+        val embeddingRequest = EmbeddingRequest(query, embeddingLLM.modelName)
         val mapper = ObjectMapper()
 
         val payload = mapper.writeValueAsString(embeddingRequest)
-        val response = getApiRequestFromLLM(API_ENDPOINT + OLLAMA_EMBEDDING_MODEL_API_ENDPOINT, payload, false)
+        val response = sendApiRequestToLlm(apiEndpoint + embeddingEndpoint, payload, false)
         val embeddingResponse = try {
             mapper.readValue(response, EmbeddingResponse::class.java)
         } catch (e: JsonParseException) {
             println("Can't get response from embedding model")
             println("Response: $response")
-            println("URL: $API_ENDPOINT$OLLAMA_EMBEDDING_MODEL_API_ENDPOINT")
+            println("URL: $apiEndpoint${embeddingEndpoint}")
             println("Payload: $payload")
             throw RuntimeException(e)
         }
         val data = Embedding(embeddingResponse.embeddings)
-        if (data.vector().isEmpty()){
-            throw RuntimeException("Something is going wrong. No vector data. URL:$API_ENDPOINT$OLLAMA_EMBEDDING_MODEL_API_ENDPOINT. Payload: $payload")
+        if (data.vector().isEmpty()) {
+            throw RuntimeException("Something is going wrong. No vector data. URL:$apiEndpoint$embeddingEndpoint. Payload: $payload")
         }
         return data
     }
 
-    private fun getApiRequestFromLLM(url: String, payload: String, printChunks: Boolean): String {
+    fun getVectorData(segments: List<TextSegment>): List<Embedding> {
+        return try {
+            val result: MutableList<Embedding> = ArrayList()
+            for (segment in segments){
+                val data = getVectorData(segment.text())
+                result.add(data)
+            }
+            result
+        } catch (e: IOException){
+            throw RuntimeException(e)
+        }
+    }
+
+    private fun sendApiRequestToLlm(url: String, payload: String, printChunks: Boolean): String {
         try {
             val urlEntity = URL(url)
 
@@ -87,11 +110,6 @@ class LlmClient(private val API_ENDPOINT: String) {
             println("Error: " + e.message)
             return "Error: " + e.message
         }
-    }
-
-    private fun getApiRequestFromLLM(url: String, payload: JSONObject, printChunks: Boolean): String {
-        val payloadString = payload.toString()
-        return getApiRequestFromLLM(url, payloadString, printChunks)
     }
 
     internal class EmbeddingRequest(var prompt: String, var model: String)

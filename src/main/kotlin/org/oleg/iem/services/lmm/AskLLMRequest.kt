@@ -6,7 +6,6 @@ class AskLLMRequest private constructor(builder: Builder) {
     val query: String?
     val useRAG: Boolean
     val contextChunksNumber: Int
-    val model: String
     val promptTemplate: String?
     var prompt: String? = null
     val contextData: HashMap<String, String> = HashMap()
@@ -14,7 +13,6 @@ class AskLLMRequest private constructor(builder: Builder) {
     init {
         query = builder.query
         useRAG = builder.useRAG
-        model = builder.model
         promptTemplate = builder.promptTemplate
         contextData.putAll(builder.contextData)
         contextChunksNumber = builder.contextChunksNumber
@@ -23,7 +21,6 @@ class AskLLMRequest private constructor(builder: Builder) {
     class Builder {
         var query: String? = null
         var useRAG = true   // default value is to use RAG
-        var model = OLLAMA_DEFAULT_LLM_MODEL   // default value
         var promptTemplate: String? = null
         val contextData: HashMap<String, String> = HashMap()
         var contextChunksNumber: Int = 0
@@ -35,11 +32,6 @@ class AskLLMRequest private constructor(builder: Builder) {
 
         fun contextChunksNumber(contextChunksNumber: Int): Builder {
             this.contextChunksNumber = contextChunksNumber
-            return this
-        }
-
-        fun model(model: String): Builder {
-            this.model = model
             return this
         }
 
