@@ -2,11 +2,9 @@ package org.oleg.iem.services.lmm
 
 import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.intellij.platform.ml.embeddings.utils.generateEmbeddingBlocking
 import dev.langchain4j.data.embedding.Embedding
 import dev.langchain4j.data.segment.TextSegment
 import org.json.JSONObject
-import org.oleg.iem.*
 import org.oleg.iem.llm_models.LlmModel
 import java.io.BufferedReader
 import java.io.IOException
