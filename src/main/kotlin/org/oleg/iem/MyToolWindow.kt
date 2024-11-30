@@ -1,7 +1,7 @@
 package org.oleg.iem
 
+import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
-import com.intellij.openapi.components.services
 import javax.swing.event.DocumentListener
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.JBPopupMenu
@@ -21,6 +21,7 @@ import java.nio.file.Paths
 import javax.swing.*
 import javax.swing.event.DocumentEvent
 
+@Service(Service.Level.PROJECT)
 class MyToolWindow(private val project: Project) : LlmResponseReadyListener, LlmRequestProcessedListener {
     private val myPanel = JPanel(BorderLayout())  // main container that can hold other UI components
     private val chatArea = JTextArea(20, 50)  // displays chat messages
@@ -32,7 +33,7 @@ class MyToolWindow(private val project: Project) : LlmResponseReadyListener, Llm
         // Popup menu with custom background items
         val popupMenu = JBPopupMenu()
 
-        println("Creating tool window content...")
+        println("Creating tool window content... Project: ${project.name}")
         myPanel.layout = BoxLayout(myPanel, BoxLayout.Y_AXIS)
 
         val apiEndpointItem = JMenuItem("API endpoint")
@@ -189,6 +190,15 @@ class MyToolWindow(private val project: Project) : LlmResponseReadyListener, Llm
         }
 
         addMessageToChat("System: Welcome to the chat!")
+        // TODO: improve handling of messages
+        subscribeToTopic()
+    }
+
+    // TODO: Do not use service and subscription to topic for ToolWindow class
+    private fun subscribeToTopic() {
+        val connection = project.messageBus.connect()
+        connection.subscribe(LlmRequestProcessedListener.LLM_REQUEST_PROCESSED_TOPIC, this)
+        connection.subscribe(LlmResponseReadyListener.LLM_RESPONSE_READY_TOPIC, this)
     }
 
     fun askLlmAndAddMessageToToChat(query: String,
@@ -251,7 +261,8 @@ class MyToolWindow(private val project: Project) : LlmResponseReadyListener, Llm
     }
 
     override fun responseReceived(response: AskLLMResponse) {
-        println("Got message from messaging infrastructure")
+        println("Got 'Response Received' message from message bus")
+        println("Showing the response to user")
         addMessageToChat("LLM: ${response.llmResponse}")
     }
 
