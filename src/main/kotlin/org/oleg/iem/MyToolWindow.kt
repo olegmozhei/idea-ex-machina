@@ -8,11 +8,9 @@ import com.intellij.openapi.ui.JBPopupMenu
 import com.intellij.ui.Gray
 import com.intellij.ui.JBColor
 import com.intellij.ui.components.JBScrollPane
-import org.oleg.iem.listeners.LlmRequestProcessedListener
+import com.intellij.openapi.diagnostic.logger
 import org.oleg.iem.listeners.LlmRequestReceivedListener
-import org.oleg.iem.listeners.LlmResponseReadyListener
 import org.oleg.iem.services.lmm.AskLLMRequest
-import org.oleg.iem.utils.AskLLMResponse
 import java.awt.BorderLayout
 import java.awt.FlowLayout
 import java.awt.Font
@@ -23,6 +21,7 @@ import javax.swing.event.DocumentEvent
 
 @Service(Service.Level.PROJECT)
 class MyToolWindow(private val project: Project) {
+    private val logger = logger<MyToolWindow>()
     private val myPanel = JPanel(BorderLayout())  // main container that can hold other UI components
     private val chatArea = JTextArea(20, 50)  // displays chat messages
 
@@ -33,7 +32,7 @@ class MyToolWindow(private val project: Project) {
         // Popup menu with custom background items
         val popupMenu = JBPopupMenu()
 
-        println("Creating tool window content... Project: ${project.name}")
+        logger.info("Creating tool window content... Project: ${project.name}")
         myPanel.layout = BoxLayout(myPanel, BoxLayout.Y_AXIS)
 
         val apiEndpointItem = JMenuItem("API endpoint")
