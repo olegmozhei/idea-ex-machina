@@ -91,22 +91,23 @@ class Temp(private val project: Project) : GutterIconNavigationHandler<PsiElemen
 
     private fun processQueryElement(queryElement: MyPromptQueryImpl, requestBuilder: AskLLMRequest.Builder){
         val query = queryElement.text.replace("Query:", "")
-            .replace("^\n+", "")
-            .replace("\n+$", "")
+            .replace(Regex("^\n+"), "")
+            .replace(Regex("\n+$"), "")
         println("Found query element $query")
         requestBuilder.query(query)
     }
 
     private fun processDetailsElement(details: MyPromptDetails, requestBuilder: AskLLMRequest.Builder){
         val valueToAdd = details.text.replace("Details:", "")
-            .replace("^\n+", "")
+            .replace(Regex("^\n+"), "")
+            .replace(Regex("\n+$"), "")
         requestBuilder.contextData("details", valueToAdd)
     }
 
     private fun processPromptElement(promptElement: MyPromptPromptImpl, requestBuilder: AskLLMRequest.Builder){
         var template: String = promptElement.text.replace("Prompt:", "")
-            .replace("^\n+", "")
-            .replace("\n+$", "")
+            .replace(Regex("^\n+"), "")
+            .replace(Regex("\n+$"), "")
         if (template.startsWith("\"\"\"") && template.endsWith("\"\"\"")){
             template = template.substring(3, template.length - 3)
         }
