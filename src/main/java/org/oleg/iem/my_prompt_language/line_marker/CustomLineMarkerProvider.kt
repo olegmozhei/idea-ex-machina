@@ -5,12 +5,9 @@ import com.intellij.codeInsight.daemon.LineMarkerInfo
 import com.intellij.codeInsight.daemon.LineMarkerProvider
 import com.intellij.openapi.editor.markup.GutterIconRenderer
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.wm.ToolWindow
-import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiRecursiveElementVisitor
 import org.jetbrains.annotations.NotNull
-import org.oleg.iem.MyToolWindow
 import org.oleg.iem.listeners.LlmRequestReceivedListener
 import org.oleg.iem.my_prompt_language.MyPromptFile
 import org.oleg.iem.my_prompt_language.MyPromptIcons
@@ -118,7 +115,7 @@ class Temp(private val project: Project) : GutterIconNavigationHandler<PsiElemen
     private fun processVariablesElement(variablesElement: MyPromptVariablesImpl, requestBuilder: AskLLMRequest.Builder){
         var headers = ""
         var variables = ""
-        var context = HashMap<String, String>()
+        val context = HashMap<String, String>()
         variablesElement.accept(object : PsiRecursiveElementVisitor() {
             override fun visitElement(@NotNull element: PsiElement) {
                 super.visitElement(element)
