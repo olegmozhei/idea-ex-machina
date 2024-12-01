@@ -22,7 +22,7 @@ import javax.swing.*
 import javax.swing.event.DocumentEvent
 
 @Service(Service.Level.PROJECT)
-class MyToolWindow(private val project: Project) : LlmResponseReadyListener, LlmRequestProcessedListener {
+class MyToolWindow(private val project: Project) {
     private val myPanel = JPanel(BorderLayout())  // main container that can hold other UI components
     private val chatArea = JTextArea(20, 50)  // displays chat messages
 
@@ -190,15 +190,6 @@ class MyToolWindow(private val project: Project) : LlmResponseReadyListener, Llm
         }
 
         addMessageToChat("System: Welcome to the chat!")
-        // TODO: improve handling of messages
-        subscribeToTopic()
-    }
-
-    // TODO: Do not use service and subscription to topic for ToolWindow class
-    private fun subscribeToTopic() {
-        val connection = project.messageBus.connect()
-        connection.subscribe(LlmRequestProcessedListener.LLM_REQUEST_PROCESSED_TOPIC, this)
-        connection.subscribe(LlmResponseReadyListener.LLM_RESPONSE_READY_TOPIC, this)
     }
 
     fun askLlmAndAddMessageToToChat(query: String,
@@ -258,16 +249,6 @@ class MyToolWindow(private val project: Project) : LlmResponseReadyListener, Llm
             }
         })
         return inputField
-    }
-
-    override fun responseReceived(response: AskLLMResponse) {
-        println("Got 'Response Received' message from message bus")
-        println("Showing the response to user")
-        addMessageToChat("LLM: ${response.llmResponse}")
-    }
-
-    override fun requestProcessed(request: AskLLMRequest) {
-        addMessageToChat("You: ${request.prompt}")
     }
 
     fun showPathConfigurationDialog(){
