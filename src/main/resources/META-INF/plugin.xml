@@ -57,11 +57,11 @@
         </action>
     </actions>
     <projectListeners>
-        <listener class="org.oleg.iem.MyToolWindow"
+        <listener class="org.oleg.iem.listeners.LlmResponseReadyConsumer"
                   topic="org.oleg.iem.listeners.LlmResponseReadyListener"/>
         <listener class="org.oleg.iem.services.lmm.LlmService"
                   topic="org.oleg.iem.listeners.LlmRequestReceivedListener"/>
-        <listener class="org.oleg.iem.MyToolWindow"
+        <listener class="org.oleg.iem.listeners.LlmRequestProcessedConsumer"
                   topic="org.oleg.iem.listeners.LlmRequestProcessedListener"/>
     </projectListeners>
 </idea-plugin>
