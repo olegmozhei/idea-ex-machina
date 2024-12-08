@@ -16,6 +16,7 @@ import io.qdrant.client.grpc.Points.PointStruct
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.oleg.iem.*
+import org.oleg.iem.general.notifications.MyNotifier
 import org.oleg.iem.listeners.LlmRequestProcessedListener
 import org.oleg.iem.listeners.LlmRequestReceivedListener
 import org.oleg.iem.listeners.LlmResponseReadyListener
@@ -26,6 +27,7 @@ import java.nio.charset.MalformedInputException
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.util.concurrent.ExecutionException
 import java.util.stream.Collectors
 import kotlin.io.path.absolutePathString
 
@@ -58,7 +60,14 @@ class LlmService (
             println("Running coroutine to get LLM response")
             var context: List<JsonWithInt.Value>? = null
             if (request.useRAG){
-                context = prepareRagContext(request.query!!, request.contextChunksNumber)
+                try {
+                    context = prepareRagContext(request.query!!, request.contextChunksNumber)
+                } catch (e: ExecutionException)
+                {
+                    MyNotifier.notifyError(project, "Can't prepare RAG Context")
+                    return@launch
+                }
+
             }
             LlmUtils.prepareRequest(request, context)
             println("Request preparation is finished. Sending message to message bus...")
@@ -145,7 +154,7 @@ class LlmService (
 
                 vectorDatabaseClient.upsertVectorDatabase(vectorData, "test_collection")
 
-                println("Added embeddings into vector database. Total number is ${pointNumber - 1}")
+                println("Added embeddings into vector database hosted at ${vectorDatabaseClient.qdrantHost}. Total number is ${pointNumber - 1}")
             }
         }
 

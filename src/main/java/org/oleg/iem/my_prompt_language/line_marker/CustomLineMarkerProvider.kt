@@ -26,7 +26,7 @@ internal class CustomLineMarkerProvider : LineMarkerProvider {
             LineMarkerInfo(
                 element,
                 element.textRange,
-                MyPromptIcons.FILE,
+                MyPromptIcons.RUN_REQUEST,
                 null,
                 Temp(element.project),
                 GutterIconRenderer.Alignment.CENTER

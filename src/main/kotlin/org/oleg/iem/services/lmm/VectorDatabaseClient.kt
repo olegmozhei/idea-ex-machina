@@ -6,7 +6,7 @@ import io.qdrant.client.grpc.Collections
 import io.qdrant.client.grpc.Points
 import io.qdrant.client.grpc.Points.PointStruct
 
-class VectorDatabaseClient(qdrantHost: String, qdrantPort: Int, private val embeddingDimensionality: Int) {
+class VectorDatabaseClient(val qdrantHost: String, qdrantPort: Int, private val embeddingDimensionality: Int) {
     private val qdrantClient: QdrantClient = QdrantClient(
         QdrantGrpcClient.newBuilder(qdrantHost,
             qdrantPort,

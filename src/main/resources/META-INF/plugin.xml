@@ -27,6 +27,9 @@
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
 
+        <notificationGroup id="MyPromptNotifications"
+                           displayType="BALLOON"/>
+
         <codeInsight.inlayProviderFactory
                 implementation="org.oleg.iem.inlay_hints.FunctionInfoInlayProviderFactory"/>
 
